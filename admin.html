@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Backend | ChargeWave Media</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Chart.js for premium analytics charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/admin.css?v=11">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/jpeg" href="chargewave-logo.jpg?v=5">
+</head>
+<body>
+    <div class="admin-bg"></div>
+
+    <!-- Login View -->
+    <div id="loginView">
+        <div class="login-card">
+            <div class="login-logo-container" style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; justify-content: center; margin-bottom: 1.5rem;">
+                <div class="logo-crop-container" style="width: 70px; height: 70px; display: flex; align-items: center; justify-content: center;">
+                    <img src="chargewave-logo.jpg?v=5" alt="ChargeWave Media Logo" style="width: 100%; height: 100%; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 0 10px rgba(84, 213, 43, 0.25)); display: block;">
+                </div>
+                <div style="font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.04em;">
+                    <span style="color: #54D52B;">ChargeWave</span> <span style="color: #0A96FF;">Media</span>
+                </div>
+            </div>
+            <h2>Company Login</h2>
+            <form id="loginForm">
+                <div class="form-group" style="text-align: left;">
+                    <label>User ID</label>
+                    <input type="text" id="userId" class="form-control" required placeholder="Enter ID">
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <label>Password</label>
+                    <input type="password" id="password" class="form-control" required placeholder="Enter Password">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">
+                    <i class="fa-solid fa-lock"></i> Secure Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard View -->
+    <div id="dashboardView" class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-crop-container" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; overflow: hidden; margin-right: 0;">
+                    <img src="chargewave-logo.jpg?v=5" alt="ChargeWave Media Logo" style="width: 100%; height: 100%; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 0 8px rgba(84, 213, 43, 0.2)); display: block;">
+                </div>
+                <div class="brand-text">
+                    <span style="color: #54D52B;">ChargeWave</span><span style="color: #0A96FF;">Media</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <button class="tab-btn active" data-target="leadsPane">
+                    <i class="fa-solid fa-users"></i> Lead Manager
+                </button>
+                <button class="tab-btn" data-target="campaignPane">
+                    <i class="fa-solid fa-chart-pie"></i> Client Campaign Portal
+                </button>
+                <button class="tab-btn" data-target="cmsPane">
+                    <i class="fa-solid fa-pen-to-square"></i> Content Editor (CMS)
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Body -->
+        <div class="main-body">
+            <!-- Top Navigation Bar -->
+            <header class="top-bar">
+                <div class="search-box-global">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Global quick-search..." id="globalSearchInput">
+                </div>
+                <div class="top-bar-right">
+                    <span class="user-profile"><i class="fa-solid fa-user-gear"></i> Akash Patale (Admin)</span>
+                    <button id="logoutBtn" class="btn-logout"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </header>
+
+            <!-- Scrollable Content -->
+            <main class="dashboard-content">
+                <div class="tabs" style="display: none !important;">
+                    <button class="tab-btn active" data-target="leadsPane">Lead Manager</button>
+                </div>
+
+                <!-- Leads Pane -->
+                <div id="leadsPane" class="tab-pane active">
+                    <!-- Excel Sync Control Panel -->
+                    <div class="header-sheet-row">
+                        <div class="header-sheet-info">
+                            <h1>Lead Manager Dashboard - Overview</h1>
+                            <div class="header-sheet-subtext">
+                                Active File: <select id="fileSelector" class="header-sheet-select" style="min-width: 150px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 2px 4px;"></select> | 
+                                Sheet: <select id="sheetSelector" class="header-sheet-select" style="background: rgba(0,0,0,0.5); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 2px 4px;"></select> | 
+                                <span id="excelStatusBadge" class="excel-status-pill badge-success">Synced</span> | 
+                                <span id="excelStatusMsg">Connected to server database.</span>
+                                <div class="progress-bar-bg" style="width: 120px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; display: inline-flex; align-items: center; margin-left: 0.5rem; vertical-align: middle;">
+                                    <div id="syncProgressBar" class="progress-bar-fill" style="width: 100%; height: 100%; background: linear-gradient(90deg, var(--clr-primary), var(--clr-accent)); transition: width 0.3s ease;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sync-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+                            <button id="addSheetBtn" class="btn btn-outline btn-sm" title="Add New Sheet to Workbook">
+                                <i class="fa-solid fa-plus"></i> New Sheet
+                            </button>
+                            <label for="excelUploadInput" class="btn btn-primary btn-sm" style="cursor: pointer; margin-bottom: 0; display: inline-flex; align-items: center; gap: 0.4rem;" title="Upload Excel spreadsheet to server">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Excel
+                            </label>
+                            <input type="file" id="excelUploadInput" accept=".xlsx" style="display: none;">
+                            <button id="refreshLeadsBtn" class="btn btn-outline btn-sm" title="Synchronize server database now">
+                                <i class="fa-solid fa-arrows-rotate"></i> Sync Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- KPI Cards Grid -->
+                    <div class="kpi-cards-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-card-left">
+                                <span class="kpi-label">Total Leads</span>
+                                <span class="kpi-value" id="kpiTotalLeads">(0)</span>
+                            </div>
+                            <div class="kpi-card-right">
+                                <svg class="kpi-spark" viewBox="0 0 100 30">
+                                    <path d="M0,20 L10,18 L20,25 L30,12 L40,22 L50,10 L60,18 L70,8 L80,12 L90,5 L100,8" fill="none" stroke="#0A96FF" stroke-width="2" stroke-linecap="round"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-card-left">
+                                <span class="kpi-label">New Today</span>
+                                <span class="kpi-value" id="kpiNewToday">(0)</span>
+                            </div>
+                            <div class="kpi-card-right">
+                                <svg class="kpi-spark" viewBox="0 0 100 30">
+                                    <rect x="0" y="10" width="5" height="20" fill="#0A96FF" rx="1"></rect>
+                                    <rect x="10" y="15" width="5" height="15" fill="#0A96FF" rx="1"></rect>
+                                    <rect x="20" y="8" width="5" height="22" fill="#0A96FF" rx="1"></rect>
+                                    <rect x="30" y="18" width="5" height="12" fill="#0A96FF" rx="1"></rect>
+                                    <rect x="40" y="5" width="5" height="25" fill="#0A96FF" rx="1"></rect>
+                                    <rect x="50" y="12" width="5" height="18" fill="#54D52B" rx="1"></rect>
+                                    <rect x="60" y="15" width="5" height="15" fill="#54D52B" rx="1"></rect>
+                                    <rect x="70" y="8" width="5" height="22" fill="#54D52B" rx="1"></rect>
+                                    <rect x="80" y="20" width="5" height="10" fill="#54D52B" rx="1"></rect>
+                                    <rect x="90" y="4" width="5" height="26" fill="#54D52B" rx="1"></rect>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-card-left">
+                                <span class="kpi-label">Conversion Rate</span>
+                                <span class="kpi-value" id="kpiConversionRate">(0%)</span>
+                            </div>
+                            <div class="kpi-card-right">
+                                <svg class="kpi-spark" viewBox="0 0 100 30">
+                                    <path d="M0,25 L15,22 L30,24 L45,15 L60,18 L75,10 L90,12 L100,5" fill="none" stroke="#54D52B" stroke-width="2" stroke-linecap="round"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-card-left">
+                                <span class="kpi-label">Source Breakdown</span>
+                                <span class="kpi-value" id="kpiSourceBreakdown">0%</span>
+                            </div>
+                            <div class="kpi-card-right">
+                                <svg class="kpi-spark" viewBox="0 0 100 30">
+                                    <rect x="0" y="15" width="6" height="15" fill="#0A96FF" rx="1"></rect>
+                                    <rect x="12" y="8" width="6" height="22" fill="#54D52B" rx="1"></rect>
+                                    <rect x="24" y="20" width="6" height="10" fill="#FFD200" rx="1"></rect>
+                                    <rect x="36" y="5" width="6" height="25" fill="#c084fc" rx="1"></rect>
+                                    <rect x="48" y="12" width="6" height="18" fill="#f87171" rx="1"></rect>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Control Bar -->
+                    <div class="control-bar">
+                        <div class="control-bar-left">
+                            <div class="search-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="leadSearchInput" class="form-control-search" placeholder="Search leads...">
+                            </div>
+                            <select id="sourceFilterSelect" class="form-control-select">
+                                <option value="">Source Filter...</option>
+                                <option value="Meta Ads">Meta Ads</option>
+                                <option value="Referral">Referral</option>
+                                <option value="Organic">Organic</option>
+                                <option value="Google Ads">Google Ads</option>
+                            </select>
+                            <input type="text" class="form-control-select" placeholder="Date Range" onfocus="(this.type='date')" onblur="(this.type='text')">
+                        </div>
+                        <button id="openAddLeadModalBtn" class="btn btn-success btn-add-lead">
+                            <i class="fa-solid fa-user-plus"></i> Add Lead
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead id="leadsTableHead">
+                            <!-- Populated dynamically based on Excel sheet headers -->
+                        </thead>
+                        <tbody id="leadsTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bottom Analytics & Sync History Grid -->
+                <div class="analytics-grid">
+                    <!-- Widget 1: Sync History Log -->
+                    <div class="analytics-card">
+                        <h3><i class="fa-solid fa-clock-rotate-left text-blue"></i> Database Sync & Upload History Log</h3>
+                        <div id="uploadHistoryList" class="history-list-scroll">
+                            <div style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.03);">No upload history logged yet.</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Widget 2: Leads by Source (Donut Chart) -->
+                    <div class="analytics-card">
+                        <h3>Leads by Source</h3>
+                        <div class="chart-container">
+                            <canvas id="sourceDonutChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Widget 3: Leads Generated Over Time (Line Chart) -->
+                    <div class="analytics-card">
+                        <h3>Leads Generated Over Time (This Month)</h3>
+                        <div class="chart-container">
+                            <canvas id="leadsLineChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaign Pane (Post-Sale Client Dashboard View) [NEW TAB] -->
+            <div id="campaignPane" class="tab-pane">
+                <div class="pane-header">
+                    <h2>Client Campaign Performance (Portal View)</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <select id="clientSelector" class="form-control" style="width: 200px;">
+                            <option value="ampere">Ampere EV (Denver)</option>
+                            <option value="greencurrent">GreenCurrent (Phoenix)</option>
+                            <option value="voltline">VoltLine (San Jose)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="portal-grid">
+                    <!-- Metrics Card Row -->
+                    <div class="portal-metrics-row">
+                        <div class="p-card">
+                            <span class="pc-label"><i class="fa-solid fa-bullseye text-blue"></i> Sourced Leads</span>
+                            <h3 class="pc-val" id="pcLeads">42 Leads</h3>
+                            <span class="pc-sub text-green"><i class="fa-solid fa-arrow-trend-up"></i> +12% this week</span>
+                        </div>
+                        <div class="p-card">
+                            <span class="pc-label"><i class="fa-solid fa-circle-dollar-to-slot text-green"></i> Total Ad Spend</span>
+                            <h3 class="pc-val" id="pcSpend">₹62,000</h3>
+                            <span class="pc-sub">Allocated Budget</span>
+                        </div>
+                        <div class="p-card">
+                            <span class="pc-label"><i class="fa-solid fa-hand-holding-dollar text-yellow"></i> Average CPL</span>
+                            <h3 class="pc-val" id="pcCPL">₹1,476</h3>
+                            <span class="pc-sub text-green"><i class="fa-solid fa-arrow-trend-down"></i> -4% efficiency</span>
+                        </div>
+                        <div class="p-card">
+                            <span class="pc-label"><i class="fa-solid fa-bolt text-yellow"></i> ROAS Ratio</span>
+                            <h3 class="pc-val" id="pcROAS">18.4x</h3>
+                            <span class="pc-sub text-green">Highest Tier Sourced</span>
+                        </div>
+                    </div>
+
+                    <!-- Creative Approval Section -->
+                    <div class="portal-sections-grid">
+                        <div class="p-sec-card">
+                            <h4>Creative Approval Queue</h4>
+                            <p style="font-size: 0.85rem; margin-bottom: 1.25rem;">Review mockups designed by Harshada. One-click approval pushes them straight to Meta Ad Manager.</p>
+                            
+                            <div class="creative-approval-item">
+                                <div class="cai-preview">
+                                    <i class="fa-solid fa-charging-station" style="font-size: 2.2rem; color: var(--clr-accent);"></i>
+                                </div>
+                                <div class="cai-info">
+                                    <h5>Ad Idea: Commercial Site Lease Hook</h5>
+                                    <p>Format: Static Poster. Focuses on gas station/petrol pump land leases.</p>
+                                    <div class="cai-actions">
+                                        <button class="btn btn-primary btn-sm approved-toggle-btn" id="btnApprove1"><i class="fa-solid fa-circle-check"></i> Approve Creative</button>
+                                        <button class="btn btn-outline btn-sm">Request Revision</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Funnel Conversion Log -->
+                        <div class="p-sec-card">
+                            <h4>Funnel Stage Conversion</h4>
+                            <ul class="funnel-list">
+                                <li>
+                                    <span class="fl-label">Meta Ad Impressions</span>
+                                    <span class="fl-val" id="flImpressions">124,500</span>
+                                </li>
+                                <li>
+                                    <span class="fl-label">Pre-Qualified Filters Sourced</span>
+                                    <span class="fl-val" id="flQualified">118 Sourced</span>
+                                </li>
+                                <li>
+                                    <span class="fl-label">Calendly Calls Booked</span>
+                                    <span class="fl-val" id="flBooked">42 Calls</span>
+                                </li>
+                                <li>
+                                    <span class="fl-label">Signed Contract Retainers</span>
+                                    <span class="fl-val" id="flSigned">3 Clients</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Real-Time Client Strategy Bookings List -->
+                    <div class="p-sec-card" style="margin-top: 1.5rem; width: 100%;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="margin: 0; display: flex; align-items: center; gap: 0.5rem; color: var(--clr-text);">
+                                <i class="fa-solid fa-calendar-check text-green"></i> Real-Time Strategy Session Bookings
+                            </h4>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button id="deleteSelectedBookingsBtn" class="btn btn-outline btn-sm" style="color: #ef4444; border-color: #ef4444; display: none;" title="Delete Selected Bookings">
+                                    <i class="fa-solid fa-trash"></i> Delete Selected
+                                </button>
+                                <button id="exportBookingsBtn" class="btn btn-outline btn-sm" title="Download Bookings as Excel">
+                                    <i class="fa-solid fa-download"></i> Export Excel
+                                </button>
+                                <button id="refreshBookingsBtn" class="btn btn-outline btn-sm" title="Refresh client bookings from server">
+                                    <i class="fa-solid fa-arrows-rotate"></i> Refresh List
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAllBookings"></th>
+                                        <th>ID</th>
+                                        <th>Client Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Company</th>
+                                        <th>Session Date</th>
+                                        <th>Time Slot (EST)</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bookingsTableBody">
+                                    <tr>
+                                        <td colspan="9" style="text-align: center; padding: 2rem; color: var(--clr-text-dim);">No client appointments booked yet.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CMS Pane -->
+            <div id="cmsPane" class="tab-pane">
+                <div class="pane-header">
+                    <h2>Website Content Editor (Staff CMS)</h2>
+                </div>
+                <form id="cmsForm">
+                    <div class="form-group">
+                        <label>Hero Title (Main Headline on Homepage)</label>
+                        <input type="text" id="cmsTitleInput" class="form-control" placeholder="e.g. Supercharge Your EV Business With High-Voltage Leads">
+                        <small style="color: #94A3B8; margin-top: 0.5rem; display: block;">You can use HTML tags like <code>&lt;span class="highlight"&gt;text&lt;/span&gt;</code> for gradient colors.</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Hero Subtitle</label>
+                        <textarea id="cmsSubtitleInput" class="form-control" placeholder="e.g. We are a niche digital marketing agency..."></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-save"></i> Save Changes to Website
+                        </button>
+                        <button type="button" id="cmsResetBtn" class="btn btn-outline">
+                            <i class="fa-solid fa-undo"></i> Reset to Default
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Lead Modal -->
+    <div id="addLeadModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-plus text-green"></i> Add New Lead</h3>
+                <button class="modal-close-btn" id="closeAddLeadModal">&times;</button>
+            </div>
+            <form id="addLeadForm">
+                <div class="modal-body" id="addLeadModalBody">
+                    <!-- Dynamic Form Fields will be inserted here by JS based on current headers -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" id="cancelAddLead">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-plus-circle"></i> Add Lead
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Lead Modal -->
+    <div id="editLeadModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-pen text-blue"></i> Edit Lead Details</h3>
+                <button class="modal-close-btn" id="closeEditLeadModal">&times;</button>
+            </div>
+            <form id="editLeadForm">
+                <input type="hidden" id="editLeadIndex">
+                <div class="modal-body" id="editLeadModalBody">
+                    <!-- Dynamic Form Fields will be inserted here by JS -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" id="cancelEditLead">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Admin JS -->
+    <script src="js/admin.js?v=11"></script>
+</body>
+</html>
