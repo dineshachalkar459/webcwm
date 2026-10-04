@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChargeWave Media</title>
+    <meta name="description" content="ChargeWave Media - EV lead generation for installers" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav">
+        <div class="brand">
+          <span class="brand-main">ChargeWave</span>
+          <span class="brand-accent">Media</span>
+        </div>
+        <nav>
+          <a href="#home">Home</a>
+          <a href="#calculator">ROI</a>
+          <a href="#system">System</a>
+          <a href="#book">Book</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="home" class="hero container">
+        <div>
+          <p class="eyebrow">100% DEDICATED TO EV INSTALLS</p>
+          <h1>Get <span>20–50 Qualified</span> EV Installer Leads Every Month</h1>
+          <p class="lead">We source, filter, and book high-intent EV installer leads for businesses that want predictable growth.</p>
+          <div class="actions">
+            <a href="#book" class="btn primary">Book Strategy Call</a>
+            <a href="#calculator" class="btn secondary">See ROI</a>
+          </div>
+        </div>
+        <div class="card dashboard-card">
+          <h3>Lead Pipeline Tracker</h3>
+          <div class="metrics">
+            <div>
+              <strong>18.4x</strong>
+              <span>ROAS</span>
+            </div>
+            <div>
+              <strong>340%</strong>
+              <span>Inbound</span>
+            </div>
+          </div>
+          <div class="bars">
+            <span style="height: 35%"></span>
+            <span style="height: 45%"></span>
+            <span style="height: 60%"></span>
+            <span style="height: 80%"></span>
+            <span style="height: 100%"></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="calculator" class="container section">
+        <h2>How Many EV Leads Are You Leaving Behind?</h2>
+        <div class="calc-grid">
+          <div class="panel">
+            <label>
+              <span>Monthly Ad Budget</span>
+              <strong id="budgetLabel">₹25,000</strong>
+            </label>
+            <input type="range" id="budgetSlider" min="10000" max="250000" step="5000" value="25000" />
+
+            <label>
+              <span>Average Install Ticket Value</span>
+              <strong id="ticketLabel">₹5,00,000</strong>
+            </label>
+            <input type="range" id="ticketSlider" min="50000" max="2000000" step="25000" value="500000" />
+
+            <label>
+              <span>Sales Closing Rate (%)</span>
+              <strong id="closeLabel">10%</strong>
+            </label>
+            <input type="range" id="closeSlider" min="1" max="30" step="1" value="10" />
+          </div>
+
+          <div class="panel results">
+            <div class="result-box">
+              <small>Est. Pre-Qualified Leads / Mo</small>
+              <strong id="resLeads">21 Leads</strong>
+            </div>
+            <div class="result-box highlight">
+              <small>Recoverable Lost Revenue / Mo</small>
+              <strong id="resRevenue">₹10,50,000</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="system" class="section alt">
+        <div class="container">
+          <h2>The ChargeWave Lead Generation Engine</h2>
+          <div class="timeline">
+            <div class="item"><span>1</span><div><h3>Database Hygiene</h3><p>Clean, high-intent EV installer contact lists.</p></div></div>
+            <div class="item"><span>2</span><div><h3>Creative Production</h3><p>Localized ads built around EV installer pain points.</p></div></div>
+            <div class="item"><span>3</span><div><h3>Pre-Qualification</h3><p>We screen for budget, site ownership, and intent.</p></div></div>
+            <div class="item"><span>4</span><div><h3>Booked Calls</h3><p>Qualified prospects are scheduled directly.</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="book" class="container section">
+        <h2>Schedule Your 15-Min EV Scaling Call</h2>
+        <form id="bookingForm" class="booking-form">
+          <input type="text" placeholder="Your Name" required />
+          <input type="email" placeholder="Work Email" required />
+          <input type="text" placeholder="Company Name" required />
+          <input type="tel" placeholder="Phone" required />
+          <select required>
+            <option value="">Select Niche</option>
+            <option>Residential Installers</option>
+            <option>Commercial EPC</option>
+            <option>Fleet Hub Operator</option>
+          </select>
+          <button type="submit" class="btn primary">Confirm Appointment</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <p>© 2026 ChargeWave Media</p>
+        <a href="/admin.html">Staff Login</a>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
